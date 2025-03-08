@@ -1,115 +1,179 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Inventory Input Form</title>
+    <title>Cookie Monster Inventory</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <style>
+        /* Color Palette */
+        :root {
+            --primary-color: #007bff;
+            --primary-dark: #0056b3;
+            --secondary-color: #ffc107;
+            --background-light: #f0f5f8; /* Slightly different light background */
+            --background-deeper: #ffffff; /* White for container background */
+            --text-dark: #343a40;
+            --text-light: #6c757d;
+            --white: #ffffff;
+            --danger-color: #dc3545;
+            --danger-dark: #c82333;
+        }
+
         /* Basic Reset and Font */
         body {
-            font-family: sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
-            background-color: #f4f7f9; /* Light background color */
-            color: #333; /* Dark text for contrast */
-            line-height: 1.6;
+            background-color: var(--background-light); /* Light background for body */
+            color: var(--text-dark);
+            line-height: 1.7;
+            background-image: linear-gradient(135deg, #e0eafc, #cfdef3); /* Subtle gradient background */
+            background-attachment: fixed; /* Fixed background for smoother scrolling */
         }
 
         .container {
-            padding: 20px;
-            max-width: 600px; /* Limit form width on larger screens */
-            margin: 20px auto; /* Center the form */
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 700px;
+            margin: 30px auto;
+            background-color: var(--background-deeper); /* White container background */
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2); /* Slightly stronger shadow */
+        }
+
+        .header-section {
+            display: flex; /* Use flexbox for header */
+            align-items: center; /* Vertically align image and heading */
+            justify-content: center; /* Center content horizontally */
+            margin-bottom: 25px;
+        }
+
+        .header-section img {
+            height: 80px; /* Adjust logo height as needed */
+            margin-right: 20px; /* Spacing between logo and heading */
         }
 
         h2 {
-            text-align: center;
-            color: #007bff; /* Primary color for heading */
-            margin-bottom: 20px;
+            font-family: 'Pacifico', cursive;
+            text-align: left; /* Align heading text to the left within header section */
+            color: var(--primary-color);
+            margin-bottom: 0; /* Remove default bottom margin from heading */
+            font-size: 2.5em;
+            line-height: 1.2; /* Adjust line height for heading */
         }
+
 
         form {
             display: flex;
-            flex-direction: column; /* Stack form elements vertically */
+            flex-direction: column;
         }
 
         label {
-            margin-top: 10px;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-dark);
         }
 
         input[type="text"],
         input[type="number"],
         textarea,
         select {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin-bottom: 15px;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            margin-bottom: 20px;
             font-size: 1rem;
+            background-color: var(--white);
+            color: var(--text-dark);
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
         }
 
         textarea {
-            resize: vertical; /* Allow vertical resizing of textarea */
+            resize: vertical;
         }
 
         select[multiple] {
-            height: 100px; /* Adjust height for multi-select */
+            height: 120px;
         }
 
         button[type="submit"],
         button[type="reset"],
-        button[type="button"] { /* Style for the "Load Item" and "Delete Item" buttons */
-            padding: 10px 20px;
+        button[type="button"] {
+            padding: 12px 25px;
             border: none;
-            border-radius: 4px;
-            background-color: #007bff; /* Primary button color */
-            color: white;
+            border-radius: 8px;
+            background-color: var(--primary-color);
+            color: var(--white);
             cursor: pointer;
-            font-size: 1rem;
-            transition: background-color 0.3s ease; /* Smooth hover effect */
-            margin-top: 10px;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         button[type="submit"]:hover,
         button[type="reset"]:hover,
-        button[type="button"]:hover { /* Hover for "Load Item" and "Delete Item" buttons */
-            background-color: #0056b3; /* Darker shade on hover */
+        button[type="button"]:hover {
+            background-color: var(--primary-dark);
+            transform: scale(1.02);
         }
 
         button[type="reset"] {
-            background-color: #dc3545; /* Red color for cancel/reset */
+            background-color: var(--danger-color);
         }
 
         button[type="reset"]:hover {
-            background-color: #c82333; /* Darker red on hover */
+            background-color: var(--danger-dark);
         }
 
         .buttons-container {
             display: flex;
-            justify-content: space-around; /* Distribute buttons evenly */
-            margin-top: 20px;
+            justify-content: space-around;
+            margin-top: 25px;
         }
 
-        .update-section { /* Section for SKU lookup */
+        .update-section {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            align-items: center; /* Vertically align items */
+            gap: 15px;
+            margin-bottom: 25px;
+            align-items: center;
+            background-color: var(--background-light);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
         }
 
         .update-section label {
-            margin-bottom: 0; /* Adjust label margin in update section */
+            margin-bottom: 0;
+            font-weight: bold;
         }
 
+        .update-section input[type="text"] {
+            margin-bottom: 0;
+        }
 
         /* Media query for mobile responsiveness */
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             .container {
-                padding: 15px;
-                margin: 10px; /* Reduce margin on small screens */
+                padding: 20px;
+                margin: 15px;
             }
+
+            .header-section {
+                flex-direction: column; /* Stack image and heading on mobile */
+                text-align: center; /* Center align heading on mobile */
+            }
+
+            .header-section img {
+                margin-right: 0; /* Remove right margin on mobile */
+                margin-bottom: 15px; /* Add bottom margin to image on mobile */
+                height: 70px; /* Slightly smaller logo on mobile */
+            }
+
+            h2 {
+                font-size: 2em;
+                text-align: center; /* Center heading text on mobile */
+            }
+
 
             input[type="text"],
             input[type="number"],
@@ -117,39 +181,48 @@
             select,
             button[type="submit"],
             button[type="reset"],
-            button[type="button"] { /* Mobile styles for "Load Item" and "Delete Item" buttons */
-                font-size: 0.95rem; /* Slightly smaller font on mobile */
-                padding: 8px;
+            button[type="button"] {
+                font-size: 1rem;
+                padding: 10px;
+                margin-bottom: 15px;
             }
 
             .buttons-container {
-                flex-direction: column; /* Stack buttons on mobile */
-                gap: 10px; /* Add space between stacked buttons */
+                flex-direction: column;
+                gap: 10px;
+                margin-top: 20px;
             }
 
             .update-section {
-                flex-direction: column; /* Stack SKU lookup elements on mobile */
-                align-items: stretch; /* Stretch items to full width */
+                flex-direction: column;
+                align-items: stretch;
+                padding: 15px;
+                gap: 10px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Inventory Input Form</h2>
+        <div class="header-section">
+            <img src="https://i.ibb.co/0yCB6M7s/Green-Monster-Modern-Logo.png" alt="Green-Monster-Modern-Logo" border="0">
+            <h2>Cookie Monster Inventory</h2>
+        </div>
+
 
         <div class="update-section">
             <label for="updateSKU">Update / Delete Item (Enter SKU/ID):</label>
             <input type="text" id="updateSKU" name="updateSKU">
             <button type="button" onclick="loadItemForUpdate()">Load Item</button>
-            <button type="button" onclick="deleteItem()" style="background-color: #dc3545;">Delete Item</button>  </div>
+            <button type="button" onclick="deleteItem()" style="background-color: var(--danger-color);">Delete Item</button>
+        </div>
 
         <form id="inventoryForm" action="https://script.google.com/macros/s/AKfycbwqV4_9Cev3CeYV_eKqc8EP_Xf-lU1aKwfH0BOp_2fsOebVfeZpqV4GaCqsuXIk1aHe/exec" method="POST">
             <input type="hidden" id="rowNumber" name="rowNumber" value="">
             <input type="hidden" id="SKU/ID" name="SKU/ID">
+
             <label for="Product Name">Product Name:</label>
             <input type="text" id="Product Name" name="Product Name" required>
-
 
             <label for="Purchase Price (VAT incl.)">Purchase Price (VAT incl.):</label>
             <input type="number" id="Purchase Price (VAT incl.)" name="Purchase Price (VAT incl.)" step="0.01" required>
@@ -197,12 +270,12 @@
     </div>
 
     <script>
-        const scriptURL = "https://script.google.com/macros/s/AKfycbwqV4_9Cev3CeYV_eKqc8EP_Xf-lU1aKwfH0BOp_2fsOebVfeZpqV4GaCqsuXIk1aHe/exec"; // Replace with your actual Web App URL!
+        const scriptURL = "YOUR_WEB_APP_URL"; // Replace with your actual Web App URL!
         const purchasePriceInput = document.getElementById('Purchase Price (VAT incl.)');
         const sellingPriceInput = document.getElementById('Selling Price');
-        const updateSKUInput = document.getElementById('updateSKU'); // Get SKU input for update
-        const rowNumberInput = document.getElementById('rowNumber'); // Hidden row number input
-        const submitButton = document.getElementById('submitButton'); // Submit button
+        const updateSKUInput = document.getElementById('updateSKU');
+        const rowNumberInput = document.getElementById('rowNumber');
+        const submitButton = document.getElementById('submitButton');
 
         purchasePriceInput.addEventListener('input', function() {
             const purchasePrice = parseFloat(purchasePriceInput.value);
@@ -217,15 +290,7 @@
         function loadItemForUpdate() {
             const skuToUpdate = updateSKUInput.value.trim();
             if (skuToUpdate) {
-                // In the next steps, we will add Google Apps Script to handle this
-                // For now, we'll just alert the SKU to be updated
                 alert("Loading item with SKU/ID: " + skuToUpdate + " (Functionality to be implemented with Google Apps Script)");
-                // In the future Google Apps Script integration, this function will:
-                // 1. Call a Google Apps Script function to fetch item data by SKU
-                // 2. If found, populate the form fields with the retrieved data
-                // 3. Set the hidden 'rowNumber' field with the row number from Google Sheet
-                // 4. Change the submit button text to "Save Updates"
-                // 5. If not found, display an error message
             } else {
                 alert("Please enter SKU/ID to load item for update.");
             }
@@ -235,13 +300,12 @@
             const skuToDelete = updateSKUInput.value.trim();
             if (skuToDelete) {
                 if (confirm("Are you sure you want to delete item with SKU/ID: " + skuToDelete + "? This action cannot be undone.")) {
-                    // Send a GET request to the Web App URL to delete the item
                     fetch(scriptURL + '?action=deleteItem&sku=' + skuToDelete)
                         .then(response => response.json())
                         .then(data => {
-                            alert(data.result); // Show success or error message from script
-                            if (data.result.includes("successfully")) { // If deletion was successful
-                                resetFormForNewItem(); // Optionally reset the form
+                            alert(data.result);
+                            if (data.result.includes("successfully")) {
+                                resetFormForNewItem();
                             }
                         })
                         .catch(error => {
@@ -255,7 +319,6 @@
         }
 
 
-        // Function to be called after item data is successfully loaded (from Apps Script - future step)
         function populateFormForUpdate(itemData, rowNumber) {
             document.getElementById('Product Name').value = itemData["Product Name"] || '';
             document.getElementById('SKU/ID').value = itemData["SKU/ID"] || '';
@@ -266,7 +329,6 @@
             document.getElementById('Reorder Quantity').value = itemData["Reorder Quantity"] || '';
             document.getElementById('Category').value = itemData["Category"] || '';
 
-            // For multi-select Status - split comma-separated string and select options
             const statusValues = itemData["Status"] ? itemData["Status"].split(',').map(s => s.trim()) : [];
             const statusSelect = document.getElementById('Status');
             for (let i = 0; i < statusSelect.options.length; i++) {
@@ -277,22 +339,20 @@
                 }
             }
 
-
             document.getElementById('Supplier').value = itemData["Supplier"] || '';
             document.getElementById('Location').value = itemData["Location"] || '';
             document.getElementById('Product Image URL').value = itemData["Product Image URL"] || '';
             document.getElementById('Product Description').value = itemData["Product Description"] || '';
 
-            rowNumberInput.value = rowNumber; // Set the row number in the hidden field
-            submitButton.textContent = "Save Updates"; // Change submit button text
+            rowNumberInput.value = rowNumber;
+            submitButton.textContent = "Save Updates";
         }
 
-        // Function to reset form back to "Add New Item" mode
         function resetFormForNewItem() {
-            document.getElementById('inventoryForm').reset(); // Clear all form fields
-            rowNumberInput.value = ""; // Clear the hidden row number
-            submitButton.textContent = "Add Item"; // Reset submit button text
-            updateSKUInput.value = ""; // Clear the SKU lookup field
+            document.getElementById('inventoryForm').reset();
+            rowNumberInput.value = "";
+            submitButton.textContent = "Add Item";
+            updateSKUInput.value = "";
         }
     </script>
 </body>

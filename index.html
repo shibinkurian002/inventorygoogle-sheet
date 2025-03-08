@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inventory Input Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Basic Reset and Font */
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            background-color: #f4f7f9; /* Light background color */
+            color: #333; /* Dark text for contrast */
+            line-height: 1.6;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 600px; /* Limit form width on larger screens */
+            margin: 20px auto; /* Center the form */
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #007bff; /* Primary color for heading */
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column; /* Stack form elements vertically */
+        }
+
+        label {
+            margin-top: 10px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        textarea {
+            resize: vertical; /* Allow vertical resizing of textarea */
+        }
+
+        select[multiple] {
+            height: 100px; /* Adjust height for multi-select */
+        }
+
+        button[type="submit"],
+        button[type="reset"],
+        button[type="button"] { /* Style for the "Load Item" and "Delete Item" buttons */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff; /* Primary button color */
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease; /* Smooth hover effect */
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover,
+        button[type="reset"]:hover,
+        button[type="button"]:hover { /* Hover for "Load Item" and "Delete Item" buttons */
+            background-color: #0056b3; /* Darker shade on hover */
+        }
+
+        button[type="reset"] {
+            background-color: #dc3545; /* Red color for cancel/reset */
+        }
+
+        button[type="reset"]:hover {
+            background-color: #c82333; /* Darker red on hover */
+        }
+
+        .buttons-container {
+            display: flex;
+            justify-content: space-around; /* Distribute buttons evenly */
+            margin-top: 20px;
+        }
+
+        .update-section { /* Section for SKU lookup */
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            align-items: center; /* Vertically align items */
+        }
+
+        .update-section label {
+            margin-bottom: 0; /* Adjust label margin in update section */
+        }
+
+
+        /* Media query for mobile responsiveness */
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+                margin: 10px; /* Reduce margin on small screens */
+            }
+
+            input[type="text"],
+            input[type="number"],
+            textarea,
+            select,
+            button[type="submit"],
+            button[type="reset"],
+            button[type="button"] { /* Mobile styles for "Load Item" and "Delete Item" buttons */
+                font-size: 0.95rem; /* Slightly smaller font on mobile */
+                padding: 8px;
+            }
+
+            .buttons-container {
+                flex-direction: column; /* Stack buttons on mobile */
+                gap: 10px; /* Add space between stacked buttons */
+            }
+
+            .update-section {
+                flex-direction: column; /* Stack SKU lookup elements on mobile */
+                align-items: stretch; /* Stretch items to full width */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Inventory Input Form</h2>
+
+        <div class="update-section">
+            <label for="updateSKU">Update / Delete Item (Enter SKU/ID):</label>
+            <input type="text" id="updateSKU" name="updateSKU">
+            <button type="button" onclick="loadItemForUpdate()">Load Item</button>
+            <button type="button" onclick="deleteItem()" style="background-color: #dc3545;">Delete Item</button>  </div>
+
+        <form id="inventoryForm" action="https://script.google.com/macros/s/AKfycbwqV4_9Cev3CeYV_eKqc8EP_Xf-lU1aKwfH0BOp_2fsOebVfeZpqV4GaCqsuXIk1aHe/exec" method="POST">
+            <input type="hidden" id="rowNumber" name="rowNumber" value="">
+            <input type="hidden" id="SKU/ID" name="SKU/ID">
+            <label for="Product Name">Product Name:</label>
+            <input type="text" id="Product Name" name="Product Name" required>
+
+
+            <label for="Purchase Price (VAT incl.)">Purchase Price (VAT incl.):</label>
+            <input type="number" id="Purchase Price (VAT incl.)" name="Purchase Price (VAT incl.)" step="0.01" required>
+
+            <label for="Selling Price">Selling Price:</label>
+            <input type="number" id="Selling Price" name="Selling Price" readonly>
+
+            <label for="Current Stock Qty">Current Stock Qty:</label>
+            <input type="number" id="Current Stock Qty" name="Current Stock Qty" required>
+
+            <label for="Reorder Threshold">Reorder Threshold (Optional):</label>
+            <input type="number" id="Reorder Threshold" name="Reorder Threshold">
+
+            <label for="Reorder Quantity">Reorder Quantity (Optional):</label>
+            <input type="number" id="Reorder Quantity" name="Reorder Quantity">
+
+            <label for="Category">Category:</label>
+            <input type="text" id="Category" name="Category">
+
+            <label for="Status">Status:</label>
+            <select id="Status" name="Status" multiple size="4">
+                <option value="Available on Website">Available on Website</option>
+                <option value="Available on TikTok">Available on TikTok</option>
+                <option value="Needs Processing">Needs Processing</option>
+                <option value="Out of Stock">Out of Stock</option>
+            </select>
+
+            <label for="Supplier">Supplier:</label>
+            <input type="text" id="Supplier" name="Supplier">
+
+            <label for="Location">Location:</label>
+            <input type="text" id="Location" name="Location">
+
+            <label for="Product Image URL">Product Image URL (Optional):</label>
+            <input type="text" id="Product Image URL" name="Product Image URL">
+
+            <label for="Product Description">Product Description (Optional):</label>
+            <textarea id="Product Description" name="Product Description"></textarea>
+
+            <div class="buttons-container">
+                <button type="reset">Cancel</button>
+                <button type="submit" id="submitButton">Add Item</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const purchasePriceInput = document.getElementById('Purchase Price (VAT incl.)');
+        const sellingPriceInput = document.getElementById('Selling Price');
+        const updateSKUInput = document.getElementById('updateSKU'); // Get SKU input for update
+        const rowNumberInput = document.getElementById('rowNumber'); // Hidden row number input
+        const submitButton = document.getElementById('submitButton'); // Submit button
+
+        purchasePriceInput.addEventListener('input', function() {
+            const purchasePrice = parseFloat(purchasePriceInput.value);
+            if (!isNaN(purchasePrice)) {
+                const sellingPrice = (purchasePrice * 2) + (purchasePrice * 0.1);
+                sellingPriceInput.value = sellingPrice.toFixed(2);
+            } else {
+                sellingPriceInput.value = '';
+            }
+        });
+
+        function loadItemForUpdate() {
+            const skuToUpdate = updateSKUInput.value.trim();
+            if (skuToUpdate) {
+                // In the next steps, we will add Google Apps Script to handle this
+                // For now, we'll just alert the SKU to be updated
+                alert("Loading item with SKU/ID: " + skuToUpdate + " (Functionality to be implemented with Google Apps Script)");
+                // In the future Google Apps Script integration, this function will:
+                // 1. Call a Google Apps Script function to fetch item data by SKU
+                // 2. If found, populate the form fields with the retrieved data
+                // 3. Set the hidden 'rowNumber' field with the row number from Google Sheet
+                // 4. Change the submit button text to "Save Updates"
+                // 5. If not found, display an error message
+            } else {
+                alert("Please enter SKU/ID to load item for update.");
+            }
+        }
+
+        function deleteItem() {
+            const skuToDelete = updateSKUInput.value.trim();
+            if (skuToDelete) {
+                if (confirm("Are you sure you want to delete item with SKU/ID: " + skuToDelete + "? This action cannot be undone.")) {
+                    // In the next steps, we will add Google Apps Script to handle this
+                    // For now, we'll just alert the SKU to be deleted
+                    alert("Deleting item with SKU/ID: " + skuToDelete + " (Functionality to be implemented with Google Apps Script)");
+                    // In the future Google Apps Script integration, this function will:
+                    // 1. Call a Google Apps Script function to delete item by SKU
+                    // 2. Handle success/failure messages from Apps Script
+                    // 3. Optionally reset the form after deletion
+                }
+            } else {
+                alert("Please enter SKU/ID to delete an item.");
+            }
+        }
+
+
+        // Function to be called after item data is successfully loaded (from Apps Script - future step)
+        function populateFormForUpdate(itemData, rowNumber) {
+            document.getElementById('Product Name').value = itemData["Product Name"] || '';
+            document.getElementById('SKU/ID').value = itemData["SKU/ID"] || '';
+            document.getElementById('Purchase Price (VAT incl.)').value = itemData["Purchase Price (VAT incl.)"] || '';
+            document.getElementById('Selling Price').value = itemData["Selling Price"] || '';
+            document.getElementById('Current Stock Qty').value = itemData["Current Stock Qty"] || '';
+            document.getElementById('Reorder Threshold').value = itemData["Reorder Threshold"] || '';
+            document.getElementById('Reorder Quantity').value = itemData["Reorder Quantity"] || '';
+            document.getElementById('Category').value = itemData["Category"] || '';
+
+            // For multi-select Status - split comma-separated string and select options
+            const statusValues = itemData["Status"] ? itemData["Status"].split(',').map(s => s.trim()) : [];
+            const statusSelect = document.getElementById('Status');
+            for (let i = 0; i < statusSelect.options.length; i++) {
+                if (statusValues.includes(statusSelect.options[i].value)) {
+                    statusSelect.options[i].selected = true;
+                } else {
+                    statusSelect.options[i].selected = false;
+                }
+            }
+
+
+            document.getElementById('Supplier').value = itemData["Supplier"] || '';
+            document.getElementById('Location').value = itemData["Location"] || '';
+            document.getElementById('Product Image URL').value = itemData["Product Image URL"] || '';
+            document.getElementById('Product Description').value = itemData["Product Description"] || '';
+
+            rowNumberInput.value = rowNumber; // Set the row number in the hidden field
+            submitButton.textContent = "Save Updates"; // Change submit button text
+        }
+
+        // Function to reset form back to "Add New Item" mode
+        function resetFormForNewItem() {
+            document.getElementById('inventoryForm').reset(); // Clear all form fields
+            rowNumberInput.value = ""; // Clear the hidden row number
+            submitButton.textContent = "Add Item"; // Reset submit button text
+            updateSKUInput.value = ""; // Clear the SKU lookup field
+        }
+    </script>
+</body>
+</html>

@@ -197,6 +197,7 @@
     </div>
 
     <script>
+        const scriptURL = "https://script.google.com/macros/s/AKfycbwqV4_9Cev3CeYV_eKqc8EP_Xf-lU1aKwfH0BOp_2fsOebVfeZpqV4GaCqsuXIk1aHe/exec"; // Replace with your actual Web App URL!
         const purchasePriceInput = document.getElementById('Purchase Price (VAT incl.)');
         const sellingPriceInput = document.getElementById('Selling Price');
         const updateSKUInput = document.getElementById('updateSKU'); // Get SKU input for update
@@ -234,13 +235,19 @@
             const skuToDelete = updateSKUInput.value.trim();
             if (skuToDelete) {
                 if (confirm("Are you sure you want to delete item with SKU/ID: " + skuToDelete + "? This action cannot be undone.")) {
-                    // In the next steps, we will add Google Apps Script to handle this
-                    // For now, we'll just alert the SKU to be deleted
-                    alert("Deleting item with SKU/ID: " + skuToDelete + " (Functionality to be implemented with Google Apps Script)");
-                    // In the future Google Apps Script integration, this function will:
-                    // 1. Call a Google Apps Script function to delete item by SKU
-                    // 2. Handle success/failure messages from Apps Script
-                    // 3. Optionally reset the form after deletion
+                    // Send a GET request to the Web App URL to delete the item
+                    fetch(scriptURL + '?action=deleteItem&sku=' + skuToDelete)
+                        .then(response => response.json())
+                        .then(data => {
+                            alert(data.result); // Show success or error message from script
+                            if (data.result.includes("successfully")) { // If deletion was successful
+                                resetFormForNewItem(); // Optionally reset the form
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error deleting item:', error);
+                            alert('Error deleting item. Please check console for details.');
+                        });
                 }
             } else {
                 alert("Please enter SKU/ID to delete an item.");
